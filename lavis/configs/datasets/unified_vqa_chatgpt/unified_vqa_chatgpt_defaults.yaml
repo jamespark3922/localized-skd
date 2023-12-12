@@ -1,0 +1,41 @@
+ # Copyright (c) 2022, salesforce.com, inc.
+ # All rights reserved.
+ # SPDX-License-Identifier: BSD-3-Clause
+ # For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+
+datasets:
+  unified_vqa_chatgpt:
+    # data_dir: ${env.data_dir}/datasets
+    data_type: csv # [images|videos|features|arrows|csv]
+
+    build_info:
+      # Be careful not to append minus sign (-) before split to avoid itemizing
+      annotations:
+        train:
+          storage:
+            - train_critic_input_all_vcr_vg_region_verbalizations~chatgpt_qar_n=0_v3_filtered_threshold_0.7.jsonl
+            - train_critic_input_all_vcr_vg_region_verbalizations~chatgpt_qar_n=0_v4_filtered_threshold_0.7.jsonl
+            - train_critic_input_all_vcr_vg_region_verbalizations~chatgpt_qar_n=any_v3_filtered_threshold_0.7.jsonl
+            - train_critic_input_all_vcr_vg_region_verbalizations~chatgpt_qar_n=any_v4_filtered_threshold_0.7.jsonl
+            - train_critic_input_all_vcr_vg_region_verbalizations~chatgpt_qar_n=any_v3~justpeople_object_filtered_threshold_0.7.jsonl
+            - train_critic_input_all_vcr_vg_region_verbalizations~chatgpt_qar_n=any_v4~justpeople_object_filtered_threshold_0.8.jsonl
+          region_mode: boxes
+          region_mapping: ${oc.env:UNIFIED_ANNOT}/blip2_chatgpt/all_vcr_vg_region_verbalizations.jsonl
+        val:
+          storage:
+            - val_critic_input_all_vcr_vg_region_verbalizations~chatgpt_qar_n=0_v3_filtered_threshold_0.7.jsonl
+            - val_critic_input_all_vcr_vg_region_verbalizations~chatgpt_qar_n=any_v3_filtered_threshold_0.7.jsonl
+            - val_critic_input_all_vcr_vg_region_verbalizations~chatgpt_qar_n=any_v3~justpeople_object_filtered_threshold_0.7.jsonl
+          region_mode: boxes
+          region_mapping: ${oc.env:UNIFIED_ANNOT}/blip2_chatgpt/all_vcr_vg_region_verbalizations.jsonl
+        test:
+          storage:
+            - val_critic_input_all_vcr_vg_region_verbalizations~chatgpt_qar_n=0_v3_filtered_threshold_0.7.jsonl
+            - val_critic_input_all_vcr_vg_region_verbalizations~chatgpt_qar_n=any_v3_filtered_threshold_0.7.jsonl
+            - val_critic_input_all_vcr_vg_region_verbalizations~chatgpt_qar_n=any_v3~justpeople_object_filtered_threshold_0.7.jsonl
+          region_mode: boxes
+          region_mapping: ${oc.env:UNIFIED_ANNOT}/blip2_chatgpt/all_vcr_vg_region_verbalizations.jsonl
+      csv:
+        storage: ${oc.env:UNIFIED_IMAGE_DIR}
+        ann_root: ${oc.env:UNIFIED_ANNOT}/blip2_chatgpt/lavis_chatgpt_data
+        

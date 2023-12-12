@@ -1,0 +1,67 @@
+ # Copyright (c) 2022, salesforce.com, inc.
+ # All rights reserved.
+ # SPDX-License-Identifier: BSD-3-Clause
+ # For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+
+model:
+  arch: blip2
+  model_type: pretrain
+  image_size: 480
+  prompt: "question: "
+  max_txt_len: 128
+
+datasets:
+  unified_vqa_chatgpt_contrastive: # name of the dataset builder
+    vis_processor:
+        train:
+          name: "blip_image_train"
+          image_size: 480
+        eval:
+          name: "blip_image_eval"
+          image_size: 480
+    text_processor:
+        train:
+          name: "blip_unified_vqa"
+          prompt: "question: "
+        eval:
+          name: "blip_unified_vqa"
+          prompt: "question: "
+
+run:
+  runner: runner_iter
+  max_iters: 5e4
+  iters_per_inner_epoch: 1e3
+
+  project_name: "unified_vqa_chatgpt_flan5xxl_pretrain_stage1_klone"
+  run_name: "filtered_150k"
+  output_dir: "${oc.env:LAVIS_OUTPUT_DIR}/BLIP2/Unified_qa_chatgpt_pretrain1_v2/boxes_480_contrastive"
+  # resume_ckpt_path: 'output/BLIP2/Unified_qa_chatgpt_pretrain1/flan5xxl_boxes_480_contrastive/checkpoint_latest.pth'
+  wandb_enabled: True
+
+  task: comparison
+  # optimizer
+  lr_sched: "linear_warmup_cosine_lr"
+  init_lr: 1e-5
+  min_lr: 1e-6
+  warmup_lr: 1e-7
+
+  weight_decay: 0.05
+  max_epoch: 5
+  report_metric: True
+  batch_size_train: 64
+  batch_size_eval: 8
+  accum_grad_iters: 1 
+  num_workers: 0
+  seed: 42
+
+  amp: False
+
+  evaluate: False 
+  train_splits: ["train"]
+  valid_splits: ["val"]
+  test_splits: ["test"]
+
+  device: "cuda"
+  world_size: 1
+  dist_url: "env://"
+  distributed: True

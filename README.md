@@ -4,7 +4,7 @@ Repo for **LSKD**: Distilling **localized** (e.g. bounding boxes), **visual comm
 
 [[paper](https://arxiv.org/abs/2312.04837)] [[dataset](https://storage.googleapis.com/ai2-jamesp-public/msymkd/data/lskd/train_critic_input_all_vcr_vg_region_verbalizations~chatgpt_qar_filtered_threshold_0.8_1M.jsonl)]
 
-![lskd_example](assets/example.jpg)
+![lskd_example](assets/teaser.png)
 
 ## The Localized Commonsense Knowledge (LCK) Dataset
 Dataset with localized reasoning is provided [here](https://storage.googleapis.com/ai2-jamesp-public/msymkd/data/lskd/train_critic_input_all_vcr_vg_region_verbalizations~chatgpt_qar_filtered_threshold_0.8_1M.jsonl)  
@@ -23,32 +23,38 @@ rationale     [Lions, are, often, used, as, symbols, of, str...
 prediction                                             0.940065
 ```
 
-## Installation
+## Distillation Results
+
+![lskd_example](assets/results.png)
+
+## Model Training and Evaluation
+We use the Salesforce LAVIS [repo](https://github.com/salesforce/LAVIS) to train and evaluate the knowledge distillation pipeline.
+
+### Installation
+
 ```
 pip install -e .
 ```
 
-## Distillation Checkpoints & Results
+### Downstream Task Evaluation
 
-![lskd_example](assets/results.jpg)
+You can download the BLIP2 + LSKD model [[here](https://storage.googleapis.com/ai2-jamesp-public/msymkd/ckpt/BLIP2/Unified_qa_chatgpt_pretrain1_v2/boxes_480_contrastive_1M/checkpoint_best.pth)]
 
+To run the evaluation on localized datasets, adjust `$CHECKPOINT_DIR` and run the script:
 ```
+bash run_scripts/blip2/eval/eval_unified_common_sense.sh
 ```
 
 
 ### Critic Model for Data Filtering
+We also release the critic model used to filter the irrelevant generated data.
+You can download the finetuned critic model [[here](https://storage.googleapis.com/ai2-jamesp-public/msymkd/ckpt/BLIP2/unified_vqa_critic_v2/checkpoint_best.pth)]
+
 Run the following command to run the finetuned critic model in distriubted setting.
 This saves the output json file in `run.output_dir`
 ```
 torchrun --nproc_per_node=4 evaluate.py --cfg-path lavis/projects/blip2/eval/laion/laion_sample_critic_ft_filtering.yaml \
-  --options run.output_dir=output/BLIP2/laion_samples/filtering/critic_ft
-```
-
-Zero shot model:
-Run the following command to run the finetuned model.
-```
-torchrun --nproc_per_node=4 evaluate.py --cfg-path lavis/projects/blip2/eval/laion/laion_sample_critic_ft_filtering_zs.yaml \
-  --options run.output_dir=output/BLIP2/laion_samples/filtering/zs
+  --options run.output_dir=output/BLIP2/laion_samples/filtering/critic_ft/
 ```
 
 ## References

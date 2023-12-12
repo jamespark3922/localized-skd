@@ -1,0 +1,41 @@
+ # Copyright (c) 2022, salesforce.com, inc.
+ # All rights reserved.
+ # SPDX-License-Identifier: BSD-3-Clause
+ # For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+
+datasets:
+  laion_sample_extracted:
+    data_type: csv # [images|videos|features|arrows|csv]
+
+    build_info:
+      # Be careful not to append minus sign (-) before split to avoid itemizing
+      annotations:
+        # train:
+          # storage: /home/jamesp//data/unified/unified_visual_commonsense_simple_train_debug.jsonl
+          # storage:
+          #   - human_eval/chatgpt_accepted_data/chatgpt_annotation_train_0_5000_balanced.jsonl
+          # region_mode: boxes
+          # use_generative: False
+        # val:
+        #   storage:
+        #     - human_eval/chatgpt_accepted_data/chatgpt_annotation_val_0_5000.jsonl
+        #   region_mode: boxes
+          # use_generative: False
+        test:
+          # FIXME: convert to tar file.
+          # storage: - {00000..000099}.tar
+          storage: 
+            - 000000/
+            - 000001/
+            - 000002/
+            - 000003/
+            - 000004/
+            - 000005/
+            - 000006/
+            - 000007/
+            - 000008/
+            - 000009/
+      csv:
+        ann_root: "${oc.env:UNIFIED_IMAGE_DIR}/laion-samples"
+        storage: "${oc.env:UNIFIED_IMAGE_DIR}" # /dev/shm
+        

@@ -1,0 +1,66 @@
+ # Copyright (c) 2022, salesforce.com, inc.
+ # All rights reserved.
+ # SPDX-License-Identifier: BSD-3-Clause
+ # For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+
+model:
+  arch: blip2_critic
+  model_type: pretrain
+  pretrained: https://storage.googleapis.com/ai2-jamesp-public/msymkd/ckpt/BLIP2/unified_vqa_critic_v2/checkpoint_best.pth
+  image_size: 480
+  prompt: "question: "
+  max_txt_len: 128
+
+  use_grad_checkpoint: False
+  vit_precision: "fp32"
+  freeze_vit: True
+
+datasets:
+  laion_sample_extracted: # name of the dataset builder
+    vis_processor:
+        train:
+          name: "blip_image_train"
+          image_size: 480
+        eval:
+          name: "blip_image_eval"
+          image_size: 480
+    text_processor:
+        train:
+          name: "blip_unified_vqa"
+          prompt: ""
+        eval:
+          name: "blip_unified_vqa"
+          prompt: ""
+
+run:
+  # task: retrieval
+  wandb_enabled: False
+  task: multimodal_classification
+  # optimizer
+  lr_sched: "linear_warmup_cosine_lr"
+  init_lr: 1e-5
+  min_lr: 0
+  weight_decay: 0.05
+
+  report_metric: False
+  batch_size_train: 32 # 8 * 2 = 16 *4 
+  batch_size_eval: 32
+  accum_grad_iters: 2
+  num_workers: 4
+  prompt: ""
+
+  seed: 42
+  output_dir: "/gscratch/xlab/jspark96/code/LAVIS/output/BLIP2/laion_samples/filtering/critic_ft"
+
+  amp: False
+  resume_ckpt_path: null
+
+  evaluate: True
+  # train_splits: ["train"]
+  # valid_splits: ["val"]
+  test_splits: ["test"]
+
+  device: "cuda"
+  world_size: 1
+  dist_url: "env://"
+  distributed: True

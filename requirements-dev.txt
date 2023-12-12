@@ -1,0 +1,35 @@
+accelerate
+contexttimer
+decord
+diffusers<=0.16.0
+einops>=0.4.1
+fairscale==0.4.4
+ftfy
+gdown
+iopath
+ipython
+nlg-eval @ git+https://github.com/jamespark3922/nlg-eval/@4b7dcdae0ee3aba1b51fe5d89477fe67f32edb23
+omegaconf
+opencv-python-headless==4.5.5.64
+opendatasets
+packaging
+pandas
+plotly
+pre-commit
+pycocoevalcap
+pycocotools
+python-magic
+pyarrow
+scikit-image
+scikit-learn
+streamlit
+spacy==3.5.2
+timm==0.4.12
+torch>=1.10.0, <2.0.0
+torchvision
+tqdm
+transformers==4.30.2
+wandb
+webdataset
+wheel
+sentencepiece
